@@ -3,7 +3,7 @@ let app = express();
 let server = require("http").createServer(app);
 let SocketIo = require('socket.io')
 const Redis = require('ioredis');
-const redis = new Redis({password: sberhtr12, port: 6379, host: 'redis'});
+const redis = new Redis({password: 'sberhtr12', port: 6379, host: 'redis'});
 let port = 7000;
 
 
