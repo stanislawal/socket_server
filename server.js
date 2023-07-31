@@ -8,22 +8,20 @@ const Redis = require('ioredis');
 const redis = new Redis({password: 'sberhtr12', port: 6379, host: 'redis'});
 let port = 7000;
 
-
-
 let key = null;
 let cert = null;
 let ca = null;
 
-if (fs.existsSync('/home/node/app/ssl/live/medoed-crm-ru/privkey.pem')) {
-	key = fs.readFileSync('/home/node/app/ssl/live/medoed-crm-ru/privkey.pem');
+if (fs.existsSync('/home/node/app/ssl/privkey1.pem')) {
+	key = fs.readFileSync('/home/node/app/ssl/privkey1.pem');
 }
 
-if (fs.existsSync('/home/node/app/ssl/live/medoed-crm-ru/cert.pem')) {
-	cert = fs.readFileSync('/home/node/app/ssl/live/medoed-crm-ru/cert.pem');
+if (fs.existsSync('/home/node/app/ssl/cert1.pem')) {
+	cert = fs.readFileSync('/home/node/app/ssl/cert1.pem');
 }
 
-if (fs.existsSync('/home/node/app/ssl/live/medoed-crm-ru/chain.pem')) {
-	ca = fs.readFileSync('/home/node/app/ssl/live/medoed-crm-ru/chain.pem');
+if (fs.existsSync('/home/node/app/ssl/chain1.pem')) {
+	ca = fs.readFileSync('/home/node/app/ssl/chain1.pem');
 }
 
 const opts = { key, cert, ca };
@@ -31,7 +29,7 @@ const opts = { key, cert, ca };
 let httpsServer = https.createServer(opts, app);
 
 httpsServer.listen(port, function () {
-    console.log("Server listening port", port);
+    console.log("HTTPS on port", port);
 });
 
 // подписываемся на все каналы 
@@ -54,6 +52,10 @@ redis.on('pmessage', (pattern, channel, res) => {
 	const event = parseData.event;
 	const data = parseData.data;
 
+	console.log(event, data);
+
 	// event = PushNotification (алиас в события в функции broadcastAs)
 	io.sockets.emit(event, data);
+
+	
 });
